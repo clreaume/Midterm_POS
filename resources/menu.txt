@@ -1,0 +1,36 @@
+1. Beans							$1.48
+	Category: Canned Vegetables
+	CAN's Original Baked Beans, 28oz Can
+2. Carrots						$1.43
+	Category: Canned Vegetables
+	CAN's original sliced carrots
+3. Corn							$1.53
+	Category: Canned Vegetables
+	CAN's original farm-fresh canned corn
+4. Tomatoes						$1.60
+	Category: Canned Vegetables
+	CAN's famous canned tomatoes - imported from (not) Italy
+5. Yams							$1.49
+	Category: Canned Vegetables
+	CAN's take on a Thanksgiving classic
+6. SpaghettiOhNos				$1.87
+	Category: Canned Pasta
+	CAN's passable pasta
+7. Pineapple						$1.53
+	Category: Canned Fruit
+	CAN's only canned fruit
+8. Tuna							$1.23
+	Category: Canned Sea Food
+	CAN's lunch favorite
+9. Chili							$1.78
+	Category: Canned Soup-ish Thing
+	CAN's original chili. Totally not just recanned.
+10. Peas							$1.36
+	Category: Canned Vegetables
+	CAN's original lil peas
+11. Soup							$1.29
+	Category: Soup
+	Chicken noodle? Tomato? Vegetable? Why not all three?
+12. Potatoes						$1.47
+	Category: Canned Vegetables
+	CAN's canned potatoes

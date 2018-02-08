@@ -1,0 +1,12 @@
+1. Beans 1.48
+2. Carrots 1.43
+3. Corn 1.53
+4. Tomatoes 1.60
+5. Yams 1.49
+6. SpaghettiOhNos 1.87
+7. Pineapple 1.53
+8. Tuna 1.23
+9. Chili 1.78
+10. Peas 1.36
+11. Soup 1.29
+12. Green Beans 1.47
