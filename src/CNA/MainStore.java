@@ -19,9 +19,9 @@ public class MainStore {
 				// System.out.println("Thanks for the update!");
 			} else {
 				System.out.println("Sorry, adding products is currently the only action for employees. Bye!");
-				System.exit(0);
+				
 			}
-
+			System.exit(0);
 		}
 
 		String anotherOrder;
