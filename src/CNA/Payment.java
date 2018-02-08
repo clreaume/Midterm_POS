@@ -8,12 +8,11 @@ public class Payment {
 	public static String CashPayment(double pay, double gt) {
 
 		double changeAmount = 0; // to hold the change
-		double paymentDetail; // to hold return value
-
-        // compute the change amount
+		
+		// compute the change amount
 		changeAmount = Math.abs(gt - pay);
-
-		return String.format("Change: ", changeAmount);
+		
+		return String.format("Cash tendered: \t\t\t $%.2f\nChange: \t\t\t\t $%.2f", pay, changeAmount);
 		
 	}
 	// check payment method
@@ -24,20 +23,24 @@ public class Payment {
 
 		System.out.println("Thank you!");
 
-		return "Payment made check: " + checkNum;
+		return "Payment made with check: " + checkNum;
 	}
     // credit card payment method
 	public static String creditCard(Scanner sc) {
 		System.out.println("Please enter your card number: ");
 		String cardNum = sc.next();
+		while (cardNum.length()!=16) {
+			System.out.println("Please enter a valid card number with 16 numbers and no spaces: ");
+			cardNum = sc.next();
+		}
 		System.out.println("Please enter card expiration: (MM/YY)");
 		String cardExpir = sc.next();
 		System.out.println("Please enter CVV code: ");
 		String cvv = sc.next();
 
-		System.out.println(" Thank you!");
+		System.out.println("Thank you!");
 
-		return "Payment made through credit card: XXX" + cardNum.substring(12);
+		return "Payment made through credit card: XXXX XXXX XXXX " + cardNum.substring(12);
 	}
 
 }

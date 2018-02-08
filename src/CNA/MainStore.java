@@ -7,8 +7,8 @@ public class MainStore {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
+		
 		String anotherOrder;
-
 		do {
 			System.out.println("Hello and welcome to CAN, where you can buy canned goods.");
 
@@ -42,7 +42,7 @@ public class MainStore {
 				double lineTotal = price * quantity;
 				subtotal = calcSubtotal(order);
 
-				System.out.printf("%d %s costing $%.2f has been added to your order. ", tempProd.getQuantity(),
+				System.out.printf("%d cans of %s costing $%.2f has been added to your order. ", tempProd.getQuantity(),
 						tempProd.getName(), lineTotal);
 				System.out.println();
 				System.out.printf("Your subtotal is $%.2f.", subtotal);
@@ -60,11 +60,13 @@ public class MainStore {
 
 			System.out.println(" How would you like to pay? Enter a for card, b for cash and c for check: ");
 			char payment = input.next().charAt(0);
-
+			
+			String receiptStr = "";
 			switch (payment) {
 			case 'a':
 				String cardNum = Payment.creditCard(input);
 				System.out.println(cardNum);
+				receiptStr = cardNum;
 				break;
 			case 'b':
 				System.out.println("Please enter your cash amount: ");
@@ -72,14 +74,18 @@ public class MainStore {
 				
 				String changeStr = Payment.CashPayment(cashProvided, grandTotal);
 				System.out.println(changeStr);
-				
+				receiptStr = changeStr;
 				break;
 			case 'c':
 				String checkStr = Payment.Check(input);
 				
 				System.out.println(checkStr);
+				receiptStr = checkStr;
 				break;
 			}
+			
+			
+			Receipt.getReceipt(order, subtotal, grandTotal, receiptStr);
 
 			System.out.println("Want to place another order? Enter Y or N: ");
 			anotherOrder = input.next();
@@ -87,8 +93,9 @@ public class MainStore {
 		} while (anotherOrder.equalsIgnoreCase("Y"));
 		
 		
+		System.out.println("Goodbye! Remember, you CAN always come back.");
 		
-		System.out.println("Thanks for shopping at CAN! You CAN always come back.");
+		
 	}
 
 	public static double calcSubtotal(ArrayList<Product> items) {
