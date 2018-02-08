@@ -1,4 +1,4 @@
-package CNA;
+package Toolbox;
 
 import java.io.*;
 import java.io.FileNotFoundException;
@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import ProductPackage.MinProductList;
+import ProductPackage.ProductList;
 
 public class MenuUpdate {
 

@@ -1,6 +1,8 @@
-package CNA;
+package PayPackage;
 
 import java.util.ArrayList;
+
+import ProductPackage.Product;
 
 public class Receipt {
 	public static void getReceipt(ArrayList<Product> orderArr, double st, double gt, String paymentStr) {

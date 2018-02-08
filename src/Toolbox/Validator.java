@@ -1,4 +1,4 @@
-package CNA;
+package Toolbox;
 
 import java.util.Scanner;
 

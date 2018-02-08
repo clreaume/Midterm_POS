@@ -1,4 +1,4 @@
-package CNA;
+package ProductPackage;
 
 public class MinProductList extends Product {
     int num;

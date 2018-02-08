@@ -1,4 +1,4 @@
-package CNA;
+package ProductPackage;
 
 public class ProductList extends Product {
     int num;

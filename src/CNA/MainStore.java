@@ -3,6 +3,12 @@ package CNA;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import PayPackage.Payment;
+import PayPackage.Receipt;
+import ProductPackage.Product;
+import Toolbox.FileTools;
+import Toolbox.MenuUpdate;
+
 public class MainStore {
 
 	public static void main(String[] args) {

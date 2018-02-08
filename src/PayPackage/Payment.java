@@ -1,4 +1,4 @@
-package CNA;
+package PayPackage;
 
 import java.util.Scanner;
 
