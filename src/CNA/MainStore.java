@@ -3,6 +3,7 @@ package CNA;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Employee.Employee;
 import PayPackage.Payment;
 import PayPackage.Receipt;
 import ProductPackage.Product;
@@ -14,22 +15,37 @@ public class MainStore {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-
+		Employee nick = new Employee("Nick", 123);
+		Employee abdul = new Employee("Abdul", 124);
+		Employee cara = new Employee("Cara", 125);
+		int emNum;
+		
+		// program starts
 		String role = Validator.getRole(input,
-				"Hello and welcome to CAN, a canned foods store. Are you an employee or a customer? (employee/customer) ", "employee",
-				"customer");
+				"Hello and welcome to CAN, a canned foods store. Are you an employee or a customer? (employee/customer) ",
+				"employee", "customer");
 
 		if (role.equalsIgnoreCase("employee")) {
-			String addProd = Validator.getContinue(input,
-					"Would you like to add a product to the inventory list? (Y/N) ", "y", "n");
-			if (addProd.equalsIgnoreCase("Y")) {
-				// System.out.println("Let's add a product to the inventory.");
-				MenuUpdate.updateList();
-				// System.out.println("Thanks for the update!");
-			} else {
-				System.out.println("Goodbye! Remember, you CAN always come back.");
+			do {
 
-			}
+				emNum = Validator.getInt(input, "Please enter your employee number: ");
+				if (emNum == nick.getEmployeeNum() || emNum == abdul.getEmployeeNum()
+						|| emNum == cara.getEmployeeNum()) {
+					if (emNum == nick.getEmployeeNum()) {
+						employeeScreen(nick);
+					}
+					if (emNum == abdul.getEmployeeNum()) {
+						employeeScreen(abdul);
+					}
+					if (emNum == cara.getEmployeeNum()) {
+						employeeScreen(cara);
+					}
+
+				} else {
+					System.out.println("Invalid entry. Please try again!");
+				}
+			} while (emNum != nick.getEmployeeNum() || emNum == abdul.getEmployeeNum()
+					|| emNum == cara.getEmployeeNum());
 			System.exit(0);
 		}
 
@@ -125,6 +141,19 @@ public class MainStore {
 		}
 
 		return subTotal;
+	}
+
+	public static void employeeScreen(Employee name) {
+		Scanner input = new Scanner(System.in);
+		String addProd = Validator.getContinue(input,
+				"Welcome, " + name.getName() + ". Would you like to add a product to the inventory list? (Y/N) ", "y",
+				"n");
+		if (addProd.equalsIgnoreCase("Y")) {
+			MenuUpdate.updateList();
+		} else {
+			System.out.println("Goodbye! Remember, you CAN always come back.");
+
+		}
 	}
 
 }
