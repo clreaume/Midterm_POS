@@ -7,17 +7,23 @@ public class MainStore {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		
-		System.out.println("Hi. Are you an employee?");
+
+		System.out.println("Hello and welcome to CAN, a canned foods store. Are you an employee or a customer?");
 		String role = input.next();
-		
 		if (role.equalsIgnoreCase("employee")) {
-			MenuUpdate.updateList();
-			System.exit(0);
+			System.out.println("Would you like to add a product to the inventory list? Enter Y or N: ");
+			String addProd = input.next();
+			if (addProd.equalsIgnoreCase("Y")) {
+				// System.out.println("Let's add a product to the inventory.");
+				MenuUpdate.updateList();
+				// System.out.println("Thanks for the update!");
+			} else {
+				System.out.println("Sorry, adding products is currently the only action for employees. Bye!");
+				System.exit(0);
+			}
+
 		}
-		
-		
-		
+
 		String anotherOrder;
 		do {
 			System.out.println("Hello and welcome to CAN, where you can buy canned goods.");
@@ -70,7 +76,7 @@ public class MainStore {
 
 			System.out.println(" How would you like to pay? Enter a for card, b for cash and c for check: ");
 			char payment = input.next().charAt(0);
-			
+
 			String receiptStr = "";
 			switch (payment) {
 			case 'a':
@@ -81,31 +87,28 @@ public class MainStore {
 			case 'b':
 				System.out.println("Please enter your cash amount: ");
 				double cashProvided = input.nextDouble();
-				
+
 				String changeStr = Payment.CashPayment(cashProvided, grandTotal);
 				System.out.println(changeStr);
 				receiptStr = changeStr;
 				break;
 			case 'c':
 				String checkStr = Payment.Check(input);
-				
+
 				System.out.println(checkStr);
 				receiptStr = checkStr;
 				break;
 			}
-			
-			
+
 			Receipt.getReceipt(order, subtotal, grandTotal, receiptStr);
 
 			System.out.println("Want to place another order? Enter Y or N: ");
 			anotherOrder = input.next();
 
 		} while (anotherOrder.equalsIgnoreCase("Y"));
-		
-		
+
 		System.out.println("Goodbye! Remember, you CAN always come back.");
-		
-		
+
 	}
 
 	public static double calcSubtotal(ArrayList<Product> items) {
