@@ -8,112 +8,113 @@ import PayPackage.Receipt;
 import ProductPackage.Product;
 import Toolbox.FileTools;
 import Toolbox.MenuUpdate;
+import Toolbox.Validator;
 
 public class MainStore {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("Hello and welcome to CAN, a canned foods store. Are you an employee or a customer?");
-		String role = input.next();
+		String role = Validator.getRole(input,
+				"Hello and welcome to CAN, a canned foods store. Are you an employee or a customer? (employee/customer) ", "employee",
+				"customer");
+
 		if (role.equalsIgnoreCase("employee")) {
-			System.out.println("Would you like to add a product to the inventory list? Enter Y or N: ");
-			String addProd = input.next();
+			String addProd = Validator.getContinue(input,
+					"Would you like to add a product to the inventory list? (Y/N) ", "y", "n");
 			if (addProd.equalsIgnoreCase("Y")) {
 				// System.out.println("Let's add a product to the inventory.");
 				MenuUpdate.updateList();
 				// System.out.println("Thanks for the update!");
 			} else {
-				System.out.println("Sorry, adding products is currently the only action for employees. Bye!");
-				
+				System.out.println("Goodbye! Remember, you CAN always come back.");
+
 			}
 			System.exit(0);
 		}
 
-		String anotherOrder;
-		do {
-			System.out.println("Hello and welcome to CAN, where you can buy canned goods.");
-
-			ArrayList<Product> order = new ArrayList<Product>();
-
-			String keepGoing;
-			double subtotal;
-
+		if (role.equalsIgnoreCase("customer")) {
+			String anotherOrder;
 			do {
-				System.out.println("Inventory:");
-				FileTools.readFromFile("resources", "menu.txt");
+				System.out.println("Here's a list of our products!");
 
-				System.out.println("Please select a product by choosing a number: ");
-				int selectionLine = input.nextInt() - 1;
-				String lineString = FileTools.grabALine("resources", "stuff.txt", selectionLine);
-				// System.out.println(lineString);
-				String[] tempArr = lineString.split(" ");
+				ArrayList<Product> order = new ArrayList<Product>();
 
-				System.out.println("How many would you like?");
-				int quantity = input.nextInt();
-				String name = tempArr[1];
-				double price = Double.parseDouble(tempArr[2]);
+				String keepGoing;
+				double subtotal;
 
-				Product tempProd = new Product();
-				tempProd.setName(name);
-				tempProd.setPrice(price);
-				tempProd.setQuantity(quantity);
+				do {
+					FileTools.readFromFile("resources", "menu.txt");
 
-				order.add(tempProd);
+					int lineNum = Toolbox.MenuUpdate.readline("resources", "stuff.txt");
 
-				double lineTotal = price * quantity;
-				subtotal = calcSubtotal(order);
+					int selectionLine = Validator.getInt(input, "Please select a product by choosing a number: ", 1,
+							lineNum);
+					selectionLine = selectionLine - 1;
+					String lineString = FileTools.grabALine("resources", "stuff.txt", selectionLine);
+					// System.out.println(lineString);
+					String[] tempArr = lineString.split(" ");
 
-				System.out.printf("%d cans of %s costing $%.2f has been added to your order. ", tempProd.getQuantity(),
-						tempProd.getName(), lineTotal);
+					int quantity = Validator.getInt(input, "How many would you like?");
+					String name = tempArr[1];
+					double price = Double.parseDouble(tempArr[2]);
+
+					Product tempProd = new Product();
+					tempProd.setName(name);
+					tempProd.setPrice(price);
+					tempProd.setQuantity(quantity);
+
+					order.add(tempProd);
+
+					double lineTotal = price * quantity;
+					subtotal = calcSubtotal(order);
+
+					System.out.printf("%d cans of %s costing $%.2f each ($%.2f total) has been added to your order. ",
+							tempProd.getQuantity(), tempProd.getName(), price, lineTotal);
+					System.out.println();
+					System.out.printf("Your subtotal is $%.2f.", subtotal);
+					System.out.println();
+					keepGoing = Validator.getContinue(input, "Want to add another product? (Y/N) ", "y", "n");
+
+				} while (keepGoing.equalsIgnoreCase("Y"));
+
+				double grandTotal = subtotal;
+
+				System.out.printf("There's no sales tax on canned goods in MI!");
 				System.out.println();
-				System.out.printf("Your subtotal is $%.2f.", subtotal);
-				System.out.println();
-				System.out.println("Want to add another product? Enter Y or N: ");
-				keepGoing = input.next();
+				System.out.printf("Your grand total is $%.2f.", grandTotal);
 
-			} while (keepGoing.equalsIgnoreCase("Y"));
+				int payment = Validator.getInt(input,
+						" How would you like to pay? Enter 1 for Card, 2 for Cash and 3 for Check: ", 1, 3);
 
-			double grandTotal = subtotal;
+				String receiptStr = "";
+				switch (payment) {
+				case 1:
+					String cardNum = Payment.creditCard(input);
+					System.out.println(cardNum);
+					receiptStr = cardNum;
+					break;
+				case 2:
+					double cashProvided = Validator.getDouble(input, "Please enter your cash amount: ", grandTotal);
+					String changeStr = Payment.CashPayment(cashProvided, grandTotal);
+					System.out.println(changeStr);
+					receiptStr = changeStr;
+					break;
+				case 3:
+					String checkStr = Payment.Check(input);
 
-			System.out.printf("There's no sales tax on canned goods in MI!");
-			System.out.println();
-			System.out.printf("Your grand total is $%.2f.", grandTotal);
+					System.out.println(checkStr);
+					receiptStr = checkStr;
+					break;
+				}
 
-			System.out.println(" How would you like to pay? Enter a for card, b for cash and c for check: ");
-			char payment = input.next().charAt(0);
+				Receipt.getReceipt(order, subtotal, grandTotal, receiptStr);
 
-			String receiptStr = "";
-			switch (payment) {
-			case 'a':
-				String cardNum = Payment.creditCard(input);
-				System.out.println(cardNum);
-				receiptStr = cardNum;
-				break;
-			case 'b':
-				System.out.println("Please enter your cash amount: ");
-				double cashProvided = input.nextDouble();
+				anotherOrder = Validator.getContinue(input, "Want to place another order? (Y/N) ", "y", "n");
 
-				String changeStr = Payment.CashPayment(cashProvided, grandTotal);
-				System.out.println(changeStr);
-				receiptStr = changeStr;
-				break;
-			case 'c':
-				String checkStr = Payment.Check(input);
-
-				System.out.println(checkStr);
-				receiptStr = checkStr;
-				break;
-			}
-
-			Receipt.getReceipt(order, subtotal, grandTotal, receiptStr);
-
-			System.out.println("Want to place another order? Enter Y or N: ");
-			anotherOrder = input.next();
-
-		} while (anotherOrder.equalsIgnoreCase("Y"));
-
-		System.out.println("Goodbye! Remember, you CAN always come back.");
+			} while (anotherOrder.equalsIgnoreCase("Y"));
+			System.out.println("Goodbye! Remember, you CAN always come back.");
+		}
 
 	}
 

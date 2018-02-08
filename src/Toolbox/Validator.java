@@ -11,6 +11,25 @@ public class Validator {
 
 	}
 
+	public static String getRole(Scanner sc, String prompt, String letter1, String letter2) {
+		boolean isValid = false;
+		String s = getString(sc, prompt);
+		while (isValid == false) {
+			if (s.equalsIgnoreCase(letter1)) {
+				s = "employee";
+				isValid = true;
+			} else if (s.equalsIgnoreCase(letter2)) {
+				s = "customer";
+				isValid = true;
+			} else {
+				System.out.println("Invalid entry.");
+				s = getString(sc, prompt);
+			}
+		}
+
+		return s;
+	}
+	
 	public static String getContinue(Scanner sc, String prompt, String letter1, String letter2) {
 		boolean isValid = false;
 		String s = getString(sc, prompt);
@@ -101,15 +120,13 @@ public class Validator {
 		return d;
 	}
 
-	public static double getDouble(Scanner sc, String prompt, double min, double max) {
+	public static double getDouble(Scanner sc, String prompt, double min) {
 		double d = 0;
 		boolean isValid = false;
 		while (isValid == false) {
 			d = getDouble(sc, prompt);
 			if (d < min)
 				System.out.println("Error! Number must be " + min + " or greater.");
-			else if (d > max)
-				System.out.println("Error! Number must be " + max + " or less.");
 			else
 				isValid = true;
 		}

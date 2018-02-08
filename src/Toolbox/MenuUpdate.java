@@ -44,7 +44,7 @@ public class MenuUpdate {
             menuStuffList.add(newProduct2);
 
             System.out.println("Do you want to add another product? (y/n)");
-            cont = scan.next();
+            cont = Validator.getContinue(scan,"Do you want to add another product? (y/n)", "y", "n");
 
             lineNum++;
         }
