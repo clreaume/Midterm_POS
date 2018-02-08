@@ -29,7 +29,7 @@ public class ProductList extends Product {
 
     @Override
     public String toString() {
-        return num + "- " + super.getName() + "\t\t\t\t\t\t" + super.getPrice() + "\n\t Category: " + super.getCategory() + "\n\t " + super.getDescription();
+        return num + ". " + super.getName() + "\t\t\t\t\t\t" + super.getPrice() + "\n\t Category: " + super.getCategory() + "\n\t " + super.getDescription();
     }
 
 }

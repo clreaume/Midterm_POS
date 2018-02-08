@@ -27,7 +27,7 @@ public class MenuUpdate {
             double price = scan.nextDouble();
             scan.nextLine();
             System.out.println("Please enter product category: ");
-            // scan.next();
+           // scan.next();
             String category =scan.nextLine();
 
             System.out.println("please enter product description: ");

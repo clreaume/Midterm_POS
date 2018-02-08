@@ -8,6 +8,16 @@ public class MainStore {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		
+		System.out.println("Hi. Are you an employee?");
+		String role = input.next();
+		
+		if (role.equalsIgnoreCase("employee")) {
+			MenuUpdate.updateList();
+			System.exit(0);
+		}
+		
+		
+		
 		String anotherOrder;
 		do {
 			System.out.println("Hello and welcome to CAN, where you can buy canned goods.");
