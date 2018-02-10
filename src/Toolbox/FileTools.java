@@ -12,12 +12,11 @@ import java.nio.file.Paths;
 public class FileTools {
 	
 	public static void readFromFile(String dirString, String filePath) {
-		Path readFile = Paths.get(dirString, filePath);  //could also do (dirString, filePath)
+		Path readFile = Paths.get(dirString, filePath);  
 		File file = readFile.toFile();
 		
 		try {
 			FileReader fr = new FileReader(file);
-			//the benefit of using BufferedReader is to help us store a block of memory that we can go back to and read data from later - more efficient than scanner
 			BufferedReader reader = new BufferedReader(fr);
 			String line = reader.readLine();
 			
@@ -25,7 +24,7 @@ public class FileTools {
 				System.out.println(line);
 				line = reader.readLine();
 			}
-			reader.close(); //
+			reader.close(); 
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found");
@@ -42,7 +41,6 @@ public class FileTools {
 		try {
 			lineWeWant = Files.readAllLines(Paths.get(dirString,filePath)).get(selectionLine);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

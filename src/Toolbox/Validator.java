@@ -3,12 +3,36 @@ package Toolbox;
 import java.util.Scanner;
 
 public class Validator {
+	
+	public static String employeeChoice(Scanner sc, String prompt, String letter1, String letter2, String letter3) {
+		boolean isValid = false;
+		String s = getString(sc, prompt);
+		while (isValid == false) {
+			if (s.equalsIgnoreCase(letter1)) {
+				
+				isValid = true;
+			} else if (s.equalsIgnoreCase(letter2)) {
+			
+				isValid = true;
+			} else if (s.equalsIgnoreCase(letter3)) {
+				
+				isValid = true;
+			}
+			else {
+				System.out.println("Invalid entry. Enter P (for product entry), E (for employee entry) or X (to exit): ");
+				s = getString(sc, prompt);
+			}
+		}
+		return s;
+	}
+	
+	
+	
 	public static String getString(Scanner sc, String prompt) {
 		System.out.print(prompt);
 		String s = sc.next(); 
-		sc.nextLine(); 
+		//sc.nextLine(); 
 		return s;
-
 	}
 
 	public static String getRole(Scanner sc, String prompt, String letter1, String letter2) {
@@ -26,7 +50,6 @@ public class Validator {
 				s = getString(sc, prompt);
 			}
 		}
-
 		return s;
 	}
 	
@@ -35,19 +58,17 @@ public class Validator {
 		String s = getString(sc, prompt);
 		while (isValid == false) {
 			if (s.equalsIgnoreCase(letter1)) {
-				s = "Y";
 				isValid = true;
 			} else if (s.equalsIgnoreCase(letter2)) {
-				s = "N";
 				isValid = true;
 			} else {
 				System.out.println("Invalid entry.");
 				s = getString(sc, prompt);
 			}
 		}
-
 		return s;
 	}
+	
 
 	public static String getMove(Scanner sc, String prompt, String letter1, String letter2, String letter3) {
 		boolean isValid = false;
@@ -69,7 +90,6 @@ public class Validator {
 				s = getString(sc, prompt);
 			}
 		}
-
 		return s;
 	}
 
@@ -82,9 +102,10 @@ public class Validator {
 				i = sc.nextInt();
 				isValid = true;
 			} else {
+				sc.next(); //to clear junk
+				sc.nextLine(); //to clear junk
 				System.out.println("Error! Invalid integer value. Try again.");
 			}
-			sc.nextLine(); // discard any other data entered on the line
 		}
 		return i;
 	}
@@ -125,10 +146,12 @@ public class Validator {
 		boolean isValid = false;
 		while (isValid == false) {
 			d = getDouble(sc, prompt);
-			if (d < min)
-				System.out.println("Error! Number must be " + min + " or greater.");
-			else
+			if (d < min) {
+				System.out.printf("Error! Cash tendered must be $%.2f or greater. ", min);
+			}
+			else {
 				isValid = true;
+			}
 		}
 		return d;
 	}

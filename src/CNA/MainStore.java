@@ -1,6 +1,7 @@
 package CNA;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import Employee.Employee;
@@ -15,46 +16,38 @@ public class MainStore {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		Employee nick = new Employee("Nick", 123);
-		Employee abdul = new Employee("Abdul", 124);
-		Employee cara = new Employee("Cara", 125);
-		int emNum;
-		
 		// program starts
 		String role = Validator.getRole(input,
-				"Hello and welcome to CAN, a canned foods store. Are you an employee or a customer? (employee/customer) ",
-				"employee", "customer");
+				"Hello and welcome to CAN, a canned foods store. Are you an employee or a customer? (E/C): ",
+				"E", "C");
+
+		HashMap<String, Integer> employees = new HashMap<String, Integer>(); // creating hashmap of username/pw pairs																	
+		employees.put("caralr", 3454);
+		employees.put("nickgs", 6787);
+		employees.put("abdulhs", 5434);
 
 		if (role.equalsIgnoreCase("employee")) {
-			do {
+			String userName = Validator.getString(input, "Please enter your employee username: ");
 
-				emNum = Validator.getInt(input, "Please enter your employee number: ");
-				if (emNum == nick.getEmployeeNum() || emNum == abdul.getEmployeeNum()
-						|| emNum == cara.getEmployeeNum()) {
-					if (emNum == nick.getEmployeeNum()) {
-						employeeScreen(nick);
-					}
-					if (emNum == abdul.getEmployeeNum()) {
-						employeeScreen(abdul);
-					}
-					if (emNum == cara.getEmployeeNum()) {
-						employeeScreen(cara);
-					}
+			while (!employees.containsKey(userName)) { //making sure username is key in employees HashMap
+				userName = Validator.getString(input, "Invalid username! Try again: ");
+			}
 
-				} else {
-					System.out.println("Invalid entry. Please try again!");
-				}
-			} while (emNum != nick.getEmployeeNum() || emNum == abdul.getEmployeeNum()
-					|| emNum == cara.getEmployeeNum());
-			System.exit(0);
+			int password = Validator.getInt(input, "Please enter your password: ");
+
+			while (employees.get(userName) != password) { //making sure password is value in employees HashMap
+				password = Validator.getInt(input, "Invalid password! Try again: ");
+			}
+
+			Employee.employeeScreen(userName, employees); //routing to employee screen
 		}
 
 		if (role.equalsIgnoreCase("customer")) {
 			String anotherOrder;
 			do {
-				System.out.println("Here's a list of our products!");
-
-				ArrayList<Product> order = new ArrayList<Product>();
+				System.out.println("\nHere's a list of our products!");
+				
+				ArrayList<Product> order = new ArrayList<Product>(); // creating order array list, aka shopping cart
 
 				String keepGoing;
 				double subtotal;
@@ -63,38 +56,39 @@ public class MainStore {
 					FileTools.readFromFile("resources", "menu.txt");
 
 					int lineNum = Toolbox.MenuUpdate.readline("resources", "stuff.txt");
-
+					System.out.println(); // spacing
 					int selectionLine = Validator.getInt(input, "Please select a product by choosing a number: ", 1,
 							lineNum);
-					selectionLine = selectionLine - 1;
+					selectionLine = selectionLine - 1; // accounting for zero-indexing
 					String lineString = FileTools.grabALine("resources", "stuff.txt", selectionLine);
-					// System.out.println(lineString);
-					String[] tempArr = lineString.split(" ");
+					String[] tempArr = lineString.split(" "); // splitting line into array
 
-					int quantity = Validator.getInt(input, "How many would you like?");
-					String name = tempArr[1];
-					double price = Double.parseDouble(tempArr[2]);
+					int quantity = Validator.getInt(input, "How many would you like? "); // asks user for quantity
+					String name = tempArr[1]; // assigning name variable to second item of array
+					double price = Double.parseDouble(tempArr[2]); // assigning price variable to third item of array
 
-					Product tempProd = new Product();
+					Product tempProd = new Product(); // creating Product object of user's choice
 					tempProd.setName(name);
 					tempProd.setPrice(price);
 					tempProd.setQuantity(quantity);
 
-					order.add(tempProd);
+					order.add(tempProd); // adding Product object into order array list
 
 					double lineTotal = price * quantity;
 					subtotal = calcSubtotal(order);
 
-					System.out.printf("%d cans of %s costing $%.2f each ($%.2f total) has been added to your order. ",
+					System.out.println();// extra line for spacing
+					System.out.printf("%d can(s) of %s costing $%.2f each ($%.2f total) added to your order. ",
 							tempProd.getQuantity(), tempProd.getName(), price, lineTotal);
-					System.out.println();
+					System.out.println();// spacing
 					System.out.printf("Your subtotal is $%.2f.", subtotal);
-					System.out.println();
+					System.out.println();// spacing
+					System.out.println();// spacing
 					keepGoing = Validator.getContinue(input, "Want to add another product? (Y/N) ", "y", "n");
 
 				} while (keepGoing.equalsIgnoreCase("Y"));
 
-				double grandTotal = subtotal;
+				double grandTotal = subtotal; // these will always be equal bc no sales tax
 
 				System.out.printf("There's no sales tax on canned goods in MI!");
 				System.out.println();
@@ -104,7 +98,7 @@ public class MainStore {
 						" How would you like to pay? Enter 1 for Card, 2 for Cash and 3 for Check: ", 1, 3);
 
 				String receiptStr = "";
-				switch (payment) {
+				switch (payment) { //switch cases based on type of payment
 				case 1:
 					String cardNum = Payment.creditCard(input);
 					System.out.println(cardNum);
@@ -118,7 +112,6 @@ public class MainStore {
 					break;
 				case 3:
 					String checkStr = Payment.Check(input);
-
 					System.out.println(checkStr);
 					receiptStr = checkStr;
 					break;
@@ -126,7 +119,7 @@ public class MainStore {
 
 				Receipt.getReceipt(order, subtotal, grandTotal, receiptStr);
 
-				anotherOrder = Validator.getContinue(input, "Want to place another order? (Y/N) ", "y", "n");
+				anotherOrder = Validator.getContinue(input, "Want to place another order? (Y/N) ", "Y", "N");
 
 			} while (anotherOrder.equalsIgnoreCase("Y"));
 			System.out.println("Goodbye! Remember, you CAN always come back.");
@@ -139,21 +132,7 @@ public class MainStore {
 		for (Product i : items) {
 			subTotal += i.getPrice() * i.getQuantity();
 		}
-
 		return subTotal;
-	}
-
-	public static void employeeScreen(Employee name) {
-		Scanner input = new Scanner(System.in);
-		String addProd = Validator.getContinue(input,
-				"Welcome, " + name.getName() + ". Would you like to add a product to the inventory list? (Y/N) ", "y",
-				"n");
-		if (addProd.equalsIgnoreCase("Y")) {
-			MenuUpdate.updateList();
-		} else {
-			System.out.println("Goodbye! Remember, you CAN always come back.");
-
-		}
 	}
 
 }

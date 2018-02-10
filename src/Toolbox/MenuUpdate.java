@@ -14,103 +14,104 @@ import ProductPackage.ProductList;
 
 public class MenuUpdate {
 
-    public static void updateList() {
-        Scanner scan = new Scanner(System.in);
-        int lineNum = readline("resources","stuff.txt");
-        lineNum+=1;
-        ArrayList <ProductList> menuUpdateList = new ArrayList <>();
-        ArrayList <MinProductList> menuStuffList = new ArrayList <>();
-        String cont = "y";
+	public static void updateList() {
+		Scanner scan = new Scanner(System.in);
+		int lineNum = readline("resources", "stuff.txt");
+		lineNum += 1;
+		ArrayList<ProductList> menuUpdateList = new ArrayList<>();
+		ArrayList<MinProductList> menuStuffList = new ArrayList<>();
+		String cont = "Y";
 
-        while (cont.equalsIgnoreCase("y")) {
-            System.out.println("Please enter product name: ");
-            String name = scan.next();
+		while (cont.equalsIgnoreCase("y")) {
 
-            System.out.println("Please enter product price: ");
-            double price = scan.nextDouble();
-            scan.nextLine();
-            System.out.println("Please enter product category: ");
-           // scan.next();
-            String category =scan.nextLine();
+			String name = Validator.getString(scan, "Please enter product name: ");
 
-            System.out.println("please enter product description: ");
-            //scan.nextLine();
-            String description = scan.nextLine();
+			double price = Validator.getDouble(scan, "Please enter product price: ");
 
-            ProductList newProduct = new ProductList(lineNum,name, price, category, description);
-            menuUpdateList.add(newProduct);
+			String category = Validator.getString(scan, "Please enter product category: ");
 
-            MinProductList newProduct2 = new MinProductList(lineNum,name,price);
-            menuStuffList.add(newProduct2);
+			String description = Validator.getString(scan, "Please enter product description: ");
 
-            System.out.println("Do you want to add another product? (y/n)");
-            cont = Validator.getContinue(scan,"Do you want to add another product? (y/n)", "y", "n");
+			ProductList newProduct = new ProductList(lineNum, name, price, category, description);
+			menuUpdateList.add(newProduct);
 
-            lineNum++;
-        }
-        System.out.println("Adding new Product is done");
-        //System.out.println(menuUpdateList);
+			MinProductList newProduct2 = new MinProductList(lineNum, name, price);
+			menuStuffList.add(newProduct2);
+			
+			System.out.println(); //spacing
+			cont = Validator.getContinue(scan, "Do you want to add another product? (Y/N) ", "Y", "N");
 
-        writeToFile("resources","menu.txt",menuUpdateList);
-        writeToFileStuuf("resources","stuff.txt",menuStuffList);
+			lineNum++;
+		}
 
-    }
-    // to read the product list to assign the new added product number
-    public static int readline(String dirString, String filePath){
+		// System.out.println(menuUpdateList);
 
-        int i = 0; // counter of product number already in the list
-        Path readFile = Paths.get(dirString, filePath);  //could also do (dirString, filePath)
-        File file = readFile.toFile();
+		writeToFile("resources", "menu.txt", menuUpdateList);
+		writeToFileStuuf("resources", "stuff.txt", menuStuffList);
 
-        try {
-            FileReader fr = new FileReader(file);
-            //the benefit of using BufferedReader is to help us store a block of memory that we can go back to and read data from later - more efficient than scanner
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
+		System.out.println("Thanks, CAN's inventory has been updated with your product(s)!");
 
-            while(line != null) {
-                i++;
-                line = reader.readLine();
-            }
-            reader.close(); //
+	}
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        } catch (IOException e) {
-            System.out.println("Something wrong with this!");
-        }
-        return  i;
-    }
-    public static void writeToFile(String dirString, String fileString, ArrayList <ProductList> ProductList) {
-        Path writeFile = Paths.get(dirString, fileString);
+	// to read the product list to assign the new added product number
+	public static int readline(String dirString, String filePath) {
 
-        File file = writeFile.toFile();
+		int i = 0; // counter of product number already in the list
+		Path readFile = Paths.get(dirString, filePath); // could also do (dirString, filePath)
+		File file = readFile.toFile();
 
-        try {
+		try {
+			FileReader fr = new FileReader(file);
+			// the benefit of using BufferedReader is to help us store a block of memory
+			// that we can go back to and read data from later - more efficient than scanner
+			BufferedReader reader = new BufferedReader(fr);
+			String line = reader.readLine();
 
-            PrintWriter printOut = new PrintWriter(new FileOutputStream(file, true));
-            for (ProductList item : ProductList) {
-                printOut.println(item);
-            }
-            printOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void writeToFileStuuf(String dirString, String fileString, ArrayList <MinProductList> ProductList) {
-        Path writeFile = Paths.get(dirString, fileString);
+			while (line != null) {
+				i++;
+				line = reader.readLine();
+			}
+			reader.close(); //
 
-        File file = writeFile.toFile();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		} catch (IOException e) {
+			System.out.println("Something wrong with this!");
+		}
+		return i;
+	}
 
-        try {
+	public static void writeToFile(String dirString, String fileString, ArrayList<ProductList> ProductList) {
+		Path writeFile = Paths.get(dirString, fileString);
 
-            PrintWriter printOut = new PrintWriter(new FileOutputStream(file, true));
-            for (MinProductList item : ProductList) {
-                printOut.println(item);
-            }
-            printOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+		File file = writeFile.toFile();
+
+		try {
+
+			PrintWriter printOut = new PrintWriter(new FileOutputStream(file, true));
+			for (ProductList item : ProductList) {
+				printOut.println(item);
+			}
+			printOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeToFileStuuf(String dirString, String fileString, ArrayList<MinProductList> ProductList) {
+		Path writeFile = Paths.get(dirString, fileString);
+
+		File file = writeFile.toFile();
+
+		try {
+
+			PrintWriter printOut = new PrintWriter(new FileOutputStream(file, true));
+			for (MinProductList item : ProductList) {
+				printOut.println(item);
+			}
+			printOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 }

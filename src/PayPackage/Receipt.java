@@ -15,7 +15,6 @@ public class Receipt {
 		//PRINT ITEMS IN ORDER
 		System.out.println("Items:");
 		for (Product i : orderArr) {
-			//System.out.printf("%s \t (quantity: %d) \t %.2f", i.getName(), i.getQuantity(), i.getPrice()*i.getQuantity());
 			System.out.printf("%-16s  quantity: %-3d  $%.2f", i.getName(), i.getQuantity(), i.getPrice()*i.getQuantity());
 			System.out.println();
 		}
@@ -23,7 +22,6 @@ public class Receipt {
 		
 		//PRINT SUBTOTAL
 		System.out.printf("Subtotal: \t\t\t $%.2f",st);
-		//System.out.printf("Subtotal: $%.2f",st);
 		System.out.println();
 		
 		//PRINT TAX
@@ -36,18 +34,14 @@ public class Receipt {
 		
 		
 		//PRINT PAYMENT INFO
-		
 		System.out.println(paymentStr);
 		
 		//PRINT EXIT MSG
 		System.out.println();
 		System.out.println("\tThanks for shopping at CAN!");
-		
 		System.out.println("-------\t-------\t-------\t-------\t-------\t-------");
 		System.out.println();
 		
-		
-		 
 	}
 	
 }
